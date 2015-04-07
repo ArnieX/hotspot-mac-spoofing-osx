@@ -34,15 +34,15 @@ if(shell_exec("whoami") != "root\n") {
 	
 }
 
-$arpcheck = shell_exec("type arp-scan");
+$fingcheck = shell_exec("type fing");
 
-if(strpos($arpcheck,'arp-scan\n')) {
+if(strpos($fingcheck,'fing is') === false) {
 	
-	echo("Please install arp-scan, this script heavily depend on it. [https://github.com/royhills/arp-scan]\n");
+	//echo("Please install fing, this script heavily depend on it. [http://www.overlooksoft.com/fing]\n");
 	
 	echo("|================================================================================|\n");
-	echo("|          Please install arp-scan, this script heavily depend on it.            |\n");
-	echo("|                   [https://github.com/royhills/arp-scan]                       |\n");
+	echo("|          Please install fing, this script heavily depend on it.                |\n");
+	echo("|                    [http://www.overlooksoft.com/fing]                          |\n");
 	echo("|================================================================================|\n\n");
 	
 	exit;
@@ -154,13 +154,16 @@ if(count($available_hotspots) > 0) {
 	    
 	    echo("          Scanning for MAC addresses nearby...\n");
 	    
-	    exec("arp-scan -q \"$(ipconfig getpacket en0 | grep 'server_identifier (ip): ' | grep -Eo '[0-9.]{1,100}')\":\"$(ipconfig getpacket en0 | grep 'subnet_mask (ip): ' | grep -Eo '[0-9.]{1,100}')\" | grep -Eo '[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}'",$macaddresses);
+	    //exec("arp-scan -q \"$(ipconfig getpacket en0 | grep 'server_identifier (ip): ' | grep -Eo '[0-9.]{1,100}')\":\"$(ipconfig getpacket en0 | grep 'subnet_mask (ip): ' | grep -Eo '[0-9.]{1,100}')\" | grep -Eo '[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}'",$macaddresses);
+	    
+	    exec("sudo /usr/bin/fing -r1 | grep -Eo '[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}' | sort | uniq",$macaddresses);
 	    
 	    $max = count($macaddresses)-1;
 	    
 	    $randmacaddr = $macaddresses[rand(0,$max)];
 	    
-	    echo("          Randomly selected some nice MAC address for you: ".$randmacaddr." device vendor: ".$macaddr_vendors[strtoupper(substr($randmacaddr,0,8))]."\n");
+	    echo("          Randomly selected some nice MAC address for you: ".$randmacaddr."\n");
+	    echo("			Device vendor: ".$macaddr_vendors[strtoupper(substr($randmacaddr,0,8))]."\n");
 	    
 	    exec("ifconfig en0 ether ".$randmacaddr);
 	    
