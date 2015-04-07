@@ -154,8 +154,6 @@ if(count($available_hotspots) > 0) {
 	    
 	    echo("          Scanning for MAC addresses nearby...\n");
 	    
-	    //exec("arp-scan -q \"$(ipconfig getpacket en0 | grep 'server_identifier (ip): ' | grep -Eo '[0-9.]{1,100}')\":\"$(ipconfig getpacket en0 | grep 'subnet_mask (ip): ' | grep -Eo '[0-9.]{1,100}')\" | grep -Eo '[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}'",$macaddresses);
-	    
 	    exec("sudo /usr/bin/fing -r1 | grep -Eo '[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}' | sort | uniq",$macaddresses);
 	    
 	    $max = count($macaddresses)-1;
