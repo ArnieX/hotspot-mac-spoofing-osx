@@ -161,7 +161,7 @@ if(count($available_hotspots) > 0) {
 	    $randmacaddr = $macaddresses[rand(0,$max)];
 	    
 	    echo("          Randomly selected some nice MAC address for you: ".$randmacaddr."\n");
-	    echo("			Device vendor: ".$macaddr_vendors[strtoupper(substr($randmacaddr,0,8))]."\n");
+	    echo("          Device vendor: ".$macaddr_vendors[strtoupper(substr($randmacaddr,0,8))]."\n");
 	    
 	    exec("ifconfig en0 ether ".$randmacaddr);
 	    
